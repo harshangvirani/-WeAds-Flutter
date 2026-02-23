@@ -6,10 +6,22 @@ plugins {
 }
 
 android {
-    namespace = "com.weads.we_ads"
+    namespace = "com.app.weads"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
+    flavorDimensions += "default"
+    productFlavors {
+        create("dev") {
+            dimension = "default"
+            resValue("string", "app_name", "App DEV")
+            applicationIdSuffix = ".dev"
+        }
 
+        create("prod") {
+            dimension = "default"
+            resValue("string", "app_name", "App Name")
+        }
+    }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
@@ -17,12 +29,12 @@ android {
     }
 
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_17.toString()
+        jvmTarget = "17"
     }
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId = "com.weads.we_ads"
+        applicationId = "com.app.weads"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = flutter.minSdkVersion

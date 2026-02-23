@@ -24,9 +24,9 @@ class CustomButton extends StatelessWidget {
     this.isLoading = false,
     this.isDisabled = false,
     this.width,
-    this.height = 52.0, // Default height
-    this.borderRadius = 8.0, // Default radius
-    this.backgroundColor = AppColors.primary, // Default from your palette
+    this.height = 52.0,
+    this.borderRadius = 8.0,
+    this.backgroundColor = AppColors.primary,
     this.textColor = AppColors.white,
     this.fontSize = 16.0,
     this.fontWeight = FontWeight.w600,
@@ -40,13 +40,13 @@ class CustomButton extends StatelessWidget {
     final bool effectiveDisabled = isDisabled || isLoading || onTap == null;
 
     return SizedBox(
-      width: width ?? double.infinity, // Default to full width if not specified
+      width: width ?? double.infinity,
       height: height.h,
       child: ElevatedButton(
         onPressed: effectiveDisabled ? null : onTap,
         style: ElevatedButton.styleFrom(
           backgroundColor: backgroundColor,
-          disabledBackgroundColor: backgroundColor.withValues(alpha: 0.5),
+          disabledBackgroundColor: backgroundColor.withOpacity(0.5),
           elevation: 0,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(borderRadius.r),
@@ -69,7 +69,7 @@ class CustomButton extends StatelessWidget {
                 text,
                 style: TextStyle(
                   color: effectiveDisabled ? AppColors.lightGrey : textColor,
-                  fontSize: fontSize.sp,
+                  fontSize: fontSize,
                   fontWeight: fontWeight,
                 ),
               ),

@@ -1,4 +1,4 @@
-package com.weads.we_ads
+package com.app.weads
 
 import io.flutter.embedding.android.FlutterActivity
 

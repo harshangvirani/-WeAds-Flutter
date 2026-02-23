@@ -10,4 +10,6 @@ class AssetsManager {
   // SVGs
   // static const String appLogo = "$_svgPath/app_logo.svg";
   static const String succesIcon = "$_svgPath/success_icon.svg";
+  static const String zipcodeIcon = "$_svgPath/zipcode.svg";
+  static const String messageIcon = "$_svgPath/Content.svg";
 }

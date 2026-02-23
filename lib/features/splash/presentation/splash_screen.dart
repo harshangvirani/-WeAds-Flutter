@@ -1,28 +1,39 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:we_ads/core/constants/assets_manager.dart';
+import 'package:we_ads/core/network/local_storage_service.dart';
+import 'package:we_ads/core/providers/user_provider.dart';
 import 'package:we_ads/core/widgets/gradient_background.dart';
 
-class SplashScreen extends StatefulWidget {
+class SplashScreen extends ConsumerStatefulWidget {
   const SplashScreen({super.key});
 
   @override
-  State<SplashScreen> createState() => _SplashScreenState();
+  ConsumerState<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> {
+class _SplashScreenState extends ConsumerState<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    _navigateToNext();
+    _checkAuthAndNavigate();
   }
 
-  void _navigateToNext() async {
+  void _checkAuthAndNavigate() async {
     await Future.delayed(const Duration(seconds: 2));
+
+    final user = await LocalStorageService.getUser();
+
     if (mounted) {
-      context.go('/login'); // Replace with logic to check auth session
+      if (user != null) {
+        ref.read(userProvider.notifier).state = user;
+        context.go('/home');
+      } else {
+        context.go('/login');
+      }
     }
   }
 
@@ -36,11 +47,7 @@ class _SplashScreenState extends State<SplashScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Image.asset(
-                  AssetsManager.appLogo,
-                  width: 88.w,
-                  height: 88.h,
-                ),
+                Image.asset(AssetsManager.appLogo, width: 88.w, height: 88.h),
                 SizedBox(height: 20.h),
               ],
             ),
