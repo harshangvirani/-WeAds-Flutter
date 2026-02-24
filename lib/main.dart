@@ -14,6 +14,7 @@ import 'core/theme/app_theme.dart';
 //   // await Firebase.initializeApp();
 //   runApp(const ProviderScope(child: WeAdsApp()));
 // }
+
 class WeAdsApp extends ConsumerWidget {
   const WeAdsApp({super.key});
 
