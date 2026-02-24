@@ -4,7 +4,8 @@ class ApiEndpoints {
   static const String createProfile = 'api/user/register';
   static const String login = 'api/authentication/login';
   static const String logout = 'api/authentication';
-  static const String savedPosts = 'api/posts/saved';
+  static const String savePosts = 'api/posts/saved';
+  static const String savedPost = 'api/posts/savedpost';
   static const String userFeed = 'api/user/feed';
   static const String categories = 'api/posts/categories';
   static const String myPosts = 'api/posts/myposts';

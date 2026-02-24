@@ -23,6 +23,7 @@ class PostCard extends ConsumerStatefulWidget {
   final String? lastName;
   final String? mobileNo;
   final bool? isMyProfile;
+  final bool showSaveButton;
 
   const PostCard({
     super.key,
@@ -32,6 +33,7 @@ class PostCard extends ConsumerStatefulWidget {
     this.lastName,
     this.mobileNo,
     this.isMyProfile = false,
+    this.showSaveButton = true,
   });
 
   @override
@@ -237,36 +239,37 @@ class _PostCardConsumerState extends ConsumerState<PostCard> {
               Column(children: [_buildMediaContent(), _buildFooter()]),
 
               /// BOOKMARK
-              Positioned(
-                bottom: 20.h,
-                right: 16.w,
-                child: GestureDetector(
-                  onTap: _handleSaveToggle,
-                  child: Container(
-                    padding: EdgeInsets.all(8.w),
-                    decoration: BoxDecoration(
-                      color: AppColors.surfaceBlue,
-                      borderRadius: BorderRadius.circular(10.r),
-                    ),
-                    child: _isSaving
-                        ? const SizedBox(
-                            width: 20,
-                            height: 20,
-                            child: CircularProgressIndicator(
-                              strokeWidth: 2,
-                              color: Colors.white,
+              if (widget.showSaveButton)
+                Positioned(
+                  bottom: 20.h,
+                  right: 16.w,
+                  child: GestureDetector(
+                    onTap: _handleSaveToggle,
+                    child: Container(
+                      padding: EdgeInsets.all(8.w),
+                      decoration: BoxDecoration(
+                        color: AppColors.surfaceBlue,
+                        borderRadius: BorderRadius.circular(10.r),
+                      ),
+                      child: _isSaving
+                          ? const SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                                color: Colors.white,
+                              ),
+                            )
+                          : Icon(
+                              _isSavedLocal
+                                  ? Icons.bookmark
+                                  : Icons.bookmark_border,
+                              color: AppColors.primary,
+                              size: 20,
                             ),
-                          )
-                        : Icon(
-                            _isSavedLocal
-                                ? Icons.bookmark
-                                : Icons.bookmark_border,
-                            color: AppColors.primary,
-                            size: 20,
-                          ),
+                    ),
                   ),
                 ),
-              ),
             ],
           ),
         ],

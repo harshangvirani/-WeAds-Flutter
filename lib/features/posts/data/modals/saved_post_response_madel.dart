@@ -1,22 +1,47 @@
 import 'package:we_ads/features/posts/data/modals/post_model.dart';
 
+/// Represents one entry in the savedpost API response list.
+/// Each entry = one user + one saved post.
 class SavedPostResponse {
   final String? userId;
   final String? firstName;
   final String? lastName;
-  final List<PostModel>? posts;
+  final String? email;
+  final String? mobileNo;
+  final String? description;
+  final String? pincode;
+  final String? city;
+  final String? profilePhotoUrl; // extracted from profilePhoto.fileUrl
+  final PostModel? post;         // singular "post" field
 
-  SavedPostResponse({this.userId, this.firstName, this.lastName, this.posts});
+  SavedPostResponse({
+    this.userId,
+    this.firstName,
+    this.lastName,
+    this.email,
+    this.mobileNo,
+    this.description,
+    this.pincode,
+    this.city,
+    this.profilePhotoUrl,
+    this.post,
+  });
 
   factory SavedPostResponse.fromJson(Map<String, dynamic> json) {
     return SavedPostResponse(
       userId: json['userId'],
       firstName: json['firstName'],
       lastName: json['lastName'],
-      posts: json['posts'] != null
-          ? List<PostModel>.from(
-              json['posts'].map((x) => PostModel.fromJson(x)),
-            )
+      email: json['email'],
+      mobileNo: json['mobileNo'],
+      description: json['description'],
+      pincode: json['pincode'],
+      city: json['city'],
+      profilePhotoUrl: json['profilePhoto'] != null
+          ? (json['profilePhoto'] as Map<String, dynamic>)['fileUrl'] as String?
+          : null,
+      post: json['post'] != null
+          ? PostModel.fromJson(json['post'] as Map<String, dynamic>)
           : null,
     );
   }
@@ -39,7 +64,6 @@ class MediaModel {
     );
   }
 
-  // Helper getters to identify media types
   bool get isImage => contentType?.startsWith('image') ?? false;
   bool get isVideo => contentType?.startsWith('video') ?? false;
   bool get isAudio => contentType?.startsWith('audio') ?? false;

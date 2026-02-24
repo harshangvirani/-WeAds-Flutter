@@ -54,4 +54,28 @@ class PostModel {
     'savedCount': savedCount,
     'viewCount': viewCount,
   };
+
+  PostModel copyWith({
+    String? postId,
+    String? userId,
+    String? description,
+    String? categories,
+    DateTime? enteredOn,
+    List<PostMedia>? media,
+    bool? isSaved,
+    int? savedCount,
+    int? viewCount,
+  }) {
+    return PostModel(
+      postId: postId ?? this.postId,
+      userId: userId ?? this.userId,
+      description: description ?? this.description,
+      categories: categories ?? this.categories,
+      enteredOn: enteredOn ?? this.enteredOn,
+      media: media ?? this.media,
+      isSaved: isSaved ?? this.isSaved,
+      savedCount: savedCount ?? this.savedCount,
+      viewCount: viewCount ?? this.viewCount,
+    );
+  }
 }
