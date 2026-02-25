@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:we_ads/core/providers/user_provider.dart';
+import 'package:we_ads/core/utils/filter_utils.dart';
 import 'package:we_ads/features/admin/presentation/screens/admin_home_screen.dart';
 
 import '../../../../core/theme/app_colors.dart';
@@ -110,22 +111,6 @@ class MainScreen extends ConsumerWidget {
   }
 
   void _showExitDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Exit App'),
-        content: const Text('Do you want to exit?'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
-          ),
-          TextButton(
-            onPressed: () => SystemNavigator.pop(),
-            child: const Text('Exit'),
-          ),
-        ],
-      ),
-    );
+    FilterUtils.showExitDialog(context, () => SystemNavigator.pop());
   }
 }

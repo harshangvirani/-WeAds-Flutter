@@ -9,6 +9,7 @@ class CommonConfirmationDialog extends StatelessWidget {
   final String description;
   final VoidCallback onContinue;
   final String? svgIcon;
+  final String continueLabel;
 
   const CommonConfirmationDialog({
     super.key,
@@ -17,6 +18,7 @@ class CommonConfirmationDialog extends StatelessWidget {
     required this.description,
     required this.onContinue,
     this.svgIcon,
+    this.continueLabel = "Continue",
   });
 
   @override
@@ -105,9 +107,9 @@ class CommonConfirmationDialog extends StatelessWidget {
                       vertical: 12.h,
                     ),
                   ),
-                  child: const Text(
-                    "Continue",
-                    style: TextStyle(
+                  child: Text(
+                    continueLabel,
+                    style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.bold,
                       color: AppColors.primary,

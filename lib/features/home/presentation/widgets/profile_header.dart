@@ -95,11 +95,14 @@ class ProfileHeader extends StatelessWidget {
                             color: AppColors.backgroundDark,
                           ),
                           SizedBox(width: 6.w),
-                          Text(
-                            user?.email ?? "",
-                            style: const TextStyle(
-                              fontSize: 12,
-                              color: AppColors.backgroundDark,
+                          Expanded(
+                            child: Text(
+                              user?.email ?? "",
+                              style: const TextStyle(
+                                fontSize: 12,
+                                color: AppColors.backgroundDark,
+                                overflow: TextOverflow.ellipsis,
+                              ),
                             ),
                           ),
                         ],

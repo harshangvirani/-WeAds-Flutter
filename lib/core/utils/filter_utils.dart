@@ -84,8 +84,23 @@ class FilterUtils {
         title: "Logout Confirmation",
         description:
             "Are you sure you want to log out? You will need to sign in again to access your account.",
+        continueLabel: "Logout",
         onContinue: () {
           onTap();
+        },
+      ),
+    );
+  }
+
+  static void showExitDialog(BuildContext context, Function onExit) {
+    showDialog(
+      context: context,
+      builder: (context) => CommonConfirmationDialog(
+        title: "Exit Confirmation",
+        description: "Are you sure you want to exit the app?",
+        continueLabel: "Exit",
+        onContinue: () {
+          onExit();
         },
       ),
     );
