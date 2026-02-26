@@ -66,6 +66,64 @@ class PostNotifier extends AsyncNotifier<void> {
       return null;
     }
   }
+  Future<AddPostResponse?> updatePost({
+    required String postId,
+    required String description,
+    required String categories,
+    required List<File> newMediaFiles,
+    required List<String> existingMediaUrls,
+  }) async {
+    state = const AsyncLoading();
+
+    try {
+      final dio = ref.read(dioProvider);
+
+      List<MultipartFile> multipartFiles = [];
+      for (var file in newMediaFiles) {
+        multipartFiles.add(
+          await MultipartFile.fromFile(
+            file.path,
+            filename: file.path.split('/').last,
+          ),
+        );
+      }
+
+      final Map<String, dynamic> dataMap = {
+        'postId': postId,
+        'description': description,
+        'categories': categories,
+        'media': multipartFiles,
+      };
+
+      // Since update logic can vary, we send existing media back if the API expects it.
+      // Often, APIs will either replace all media or diff based on sent URLs.
+      if (existingMediaUrls.isNotEmpty) {
+        dataMap['existingMedia'] = existingMediaUrls;
+      }
+
+      final formData = FormData.fromMap(dataMap);
+
+      // Using addPost endpoint with POST as per common pattern in this app, passing postId to indicate an update.
+      final response = await dio.post(ApiEndpoints.addPost, data: formData);
+
+      final addPostResponse = AddPostResponse.fromJson(response.data);
+
+      if (addPostResponse.code == 200 &&
+          addPostResponse.statusValue == "SUCCESS") {
+        ref.invalidate(userFeedProvider);
+        ref.invalidate(otherUserPostsProvider);
+        ref.invalidate(myPostsProvider);
+        state = const AsyncData(null);
+        return addPostResponse;
+      } else {
+        throw Exception(addPostResponse.statusMessage ?? "Failed to update post");
+      }
+    } catch (e) {
+      state = AsyncError(e, StackTrace.current);
+      return null;
+    }
+  }
+
 
   Future<bool> toggleSavePost({
     required String postId,
@@ -93,6 +151,26 @@ class PostNotifier extends AsyncNotifier<void> {
       return false;
     } catch (e) {
       debugPrint("Save Post Error: $e");
+      return false;
+    }
+  }
+
+  Future<bool> deletePost({required String postId}) async {
+    final dio = ref.read(dioProvider);
+    try {
+      // Assuming a standard RESTful delete endpoint like api/posts/{postId}
+      // If the API expects the postId in the body or query params, this can be adjusted.
+      final response = await dio.delete("${ApiEndpoints.addPost}/$postId");
+
+      if (response.statusCode == 200) {
+        ref.invalidate(userFeedProvider);
+        ref.invalidate(otherUserPostsProvider);
+        ref.invalidate(myPostsProvider);
+        return true;
+      }
+      return false;
+    } catch (e) {
+      debugPrint("Delete Post Error: $e");
       return false;
     }
   }

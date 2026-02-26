@@ -13,6 +13,8 @@ import 'package:we_ads/features/home/presentation/screens/main_screen.dart';
 import 'package:we_ads/features/home/presentation/screens/profile_page.dart';
 import 'package:we_ads/features/manageSubscription/presentation/manage_subscription_screen.dart';
 import 'package:we_ads/features/noInternet/presentation/no_internet_screen.dart';
+import 'package:we_ads/features/posts/data/modals/post_model.dart';
+import 'package:we_ads/features/posts/presentation/screens/edit_post_screen.dart';
 import 'package:we_ads/features/posts/presentation/screens/new_post_screen.dart';
 import 'package:we_ads/features/posts/presentation/screens/user_post_list_screen.dart';
 import 'package:we_ads/features/search/presentation/search_screen.dart';
@@ -75,6 +77,15 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/new-post',
         builder: (context, state) => const NewPostScreen(),
+      ),
+      GoRoute(
+        path: '/edit-post',
+        builder: (context, state) {
+           if(state.extra is PostModel) {
+              return EditPostScreen(post: state.extra as PostModel);
+           }
+           return const Scaffold(body: Center(child: Text("Post data missing")));
+        },
       ),
       GoRoute(
         path: '/video-preview',

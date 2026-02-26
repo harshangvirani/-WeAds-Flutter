@@ -105,4 +105,20 @@ class FilterUtils {
       ),
     );
   }
+
+  static void showDeleteDialog(BuildContext context, VoidCallback onDelete) {
+    showDialog(
+      context: context,
+      builder: (context) => CommonConfirmationDialog(
+        icon: Icons.delete_outline,
+        title: "Delete Confirmation",
+        description: "Are you sure you want to delete this post? This action cannot be undone.",
+        continueLabel: "Delete",
+        onContinue: () {
+          onDelete();
+        },
+      ),
+    );
+  }
 }
+

@@ -10,7 +10,7 @@ import 'package:we_ads/core/widgets/common_skeleton.dart';
 import 'package:we_ads/features/category/presentation/provider/category_provider.dart';
 import 'package:we_ads/features/home/presentation/providers/user_feed_provider.dart';
 import 'package:we_ads/features/home/presentation/widgets/feed_user_tile.dart';
-import 'package:we_ads/features/search/presentation/providers/search_provider.dart';
+import 'package:we_ads/features/search/providers/search_provider.dart';
 import 'package:we_ads/core/widgets/custom_text_field.dart';
 
 class SearchScreen extends ConsumerStatefulWidget {

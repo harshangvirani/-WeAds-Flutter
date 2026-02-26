@@ -1,9 +1,8 @@
-// features/home/presentation/widgets/post_card.dart
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:we_ads/core/theme/app_colors.dart';
 import 'package:we_ads/core/utils/app_toast.dart';
@@ -198,6 +197,9 @@ class _PostCardConsumerState extends ConsumerState<PostCard> {
                 ? _buildPlaceholderAvatar()
                 : null,
 
+            contentPadding: widget.isMyProfile == true
+                ? EdgeInsets.only(left: 16.w, right: 0)
+                : EdgeInsets.symmetric(horizontal: 16.w),
             title: widget.isMyProfile == false
                 ? Text(
                     "${widget.firstName ?? "User"} ${widget.lastName ?? ""}"
@@ -212,15 +214,75 @@ class _PostCardConsumerState extends ConsumerState<PostCard> {
 
             subtitle: widget.isMyProfile == false ? _dateAndView() : null,
 
-            trailing: widget.mobileNo != null
-                ? IconButton(
-                    onPressed: () => FilterUtils.showPhoneDialog(
-                      context,
-                      widget.mobileNo ?? "",
-                    ),
-                    icon: const Icon(Icons.phone_outlined),
+            trailing: widget.isMyProfile == true
+                ? PopupMenuButton<String>(
+                    padding: EdgeInsets.zero,
+                    constraints: const BoxConstraints(),
+                    icon: const Icon(Icons.more_vert, color: AppColors.darkGrey),
+                    onSelected: (String result) {
+                      if (result == 'Edit') {
+                        context.push('/edit-post', extra: widget.post);
+                      } else if (result == 'Delete') {
+                        FilterUtils.showDeleteDialog(context, () async {
+                          final success = await ref
+                              .read(postProvider.notifier)
+                              .deletePost(postId: widget.post.postId ?? "");
+                              
+                          if (success && context.mounted) {
+                            AppToast.show(
+                              context: context,
+                              message: "Post deleted successfully",
+                              type: ToastType.success,
+                            );
+                          } else if (context.mounted) {
+                            AppToast.show(
+                              context: context,
+                              message: "Failed to delete post",
+                              type: ToastType.error,
+                            );
+                          }
+                        });
+                      }
+                    },
+                    itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+                      PopupMenuItem<String>(
+                        value: 'Edit',
+                        height: 30.h,
+                        padding: EdgeInsets.symmetric(horizontal: 12.w),
+                        child: Row(
+                          children: [
+                            Icon(Icons.edit_outlined, size: 20.w, color: AppColors.darkGrey),
+                            SizedBox(width: 8.w),
+                            Text('Edit', style: TextStyle(fontSize: 14.sp)),
+                          ],
+                        ),
+                      ),
+                      PopupMenuItem<String>(
+                        value: 'Delete',
+                        height: 30.h,
+                        padding: EdgeInsets.symmetric(horizontal: 12.w),
+                        child: Row(
+                          children: [
+                            Icon(Icons.delete_outline, size: 20.w, color: AppColors.errorRed),
+                            SizedBox(width: 8.w),
+                            Text(
+                              'Delete',
+                              style: TextStyle(color: AppColors.errorRed, fontSize: 14.sp),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
                   )
-                : null,
+                : widget.mobileNo != null
+                    ? IconButton(
+                        onPressed: () => FilterUtils.showPhoneDialog(
+                          context,
+                          widget.mobileNo ?? "",
+                        ),
+                        icon: const Icon(Icons.phone_outlined),
+                      )
+                    : null,
           ),
 
           /// DESCRIPTION
