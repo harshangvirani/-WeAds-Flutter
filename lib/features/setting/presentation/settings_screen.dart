@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:we_ads/core/theme/app_colors.dart';
-import 'package:we_ads/core/theme/app_text_styles.dart';
 import 'package:we_ads/core/utils/filter_utils.dart';
 import 'package:we_ads/core/widgets/custom_app_bar.dart';
 import 'package:we_ads/features/auth/presentation/providers/auth_provider.dart';
@@ -72,12 +71,12 @@ class SettingsScreen extends ConsumerWidget {
                   _buildSettingsTile(
                     Icons.privacy_tip_outlined,
                     "Privacy policy",
-                    "Supporting line text lorem ipsum...",
+                    "Read our terms and privacy details.",
                   ),
                   _buildSettingsTile(
                     Icons.help_outline,
                     "Help",
-                    "Supporting line text lorem ipsum...",
+                    "Get support and FAQs.",
                   ),
                   _buildSettingsTile(
                     Icons.share_outlined,
@@ -112,7 +111,7 @@ class SettingsScreen extends ConsumerWidget {
                 ),
               ),
               subtitle: Text(
-                "Supporting line text lorem ipsum dolor sit...",
+                "Are you sure you want to logout from your account?",
                 style: TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.w500,
