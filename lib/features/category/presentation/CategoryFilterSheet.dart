@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:we_ads/core/theme/app_colors.dart';
+import 'package:we_ads/core/utils/category_icon_helper.dart';
 import 'package:we_ads/features/category/presentation/provider/category_provider.dart';
 
 class CategoryFilterSheet extends ConsumerWidget {
@@ -119,15 +120,12 @@ class CategoryFilterSheet extends ConsumerWidget {
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                if (isSelected) ...[
-                                  const Icon(
-                                    Icons.check,
-                                    size: 16,
-                                    color: AppColors.primary,
-                                  ),
-                                  SizedBox(width: 6.w),
-                                ],
-
+                                Icon(
+                                  CategoryIconHelper.getIconForCategory(name),
+                                  size: 16,
+                                  color: isSelected ? AppColors.primary : AppColors.darkGrey,
+                                ),
+                                SizedBox(width: 8.w),
                                 Text(
                                   name,
                                   style: TextStyle(

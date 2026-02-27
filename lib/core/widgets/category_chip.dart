@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:we_ads/core/theme/app_colors.dart';
+import 'package:we_ads/core/utils/category_icon_helper.dart';
 
 class CategoryChip extends StatelessWidget {
   final String label;
@@ -27,12 +28,14 @@ class CategoryChip extends StatelessWidget {
           border: !isSelected ? Border.all(color: AppColors.lightGrey) : null,
         ),
         child: Row(
+          mainAxisSize: MainAxisSize.min,
           children: [
-            if (isSelected)
-              const Icon(Icons.check, size: 14, color: AppColors.primary),
-
-            if (isSelected) SizedBox(width: 4.w),
-
+            Icon(
+              CategoryIconHelper.getIconForCategory(label),
+              size: 14,
+              color: isSelected ? AppColors.primary : AppColors.mediumGrey,
+            ),
+            SizedBox(width: 4.w),
             Text(
               label,
               style: TextStyle(
