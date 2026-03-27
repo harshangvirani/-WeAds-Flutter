@@ -1,2 +1,6 @@
 scripts:
   - flutter build apk --release --flavor prod
+  - flutter build apk --release --flavor dev
+
+artifacts:
+  - build/app/outputs/flutter-apk/*.apk
