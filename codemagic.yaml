@@ -18,27 +18,20 @@ workflows:
       # Flutter dependencies
       - flutter pub get
 
+      # Set up code signing manually
+      - mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
+      - cp $IOS_PROVISIONING_PROFILE_PATH_PROD ~/Library/MobileDevice/Provisioning\ Profiles/
+      - cp $IOS_PROVISIONING_PROFILE_PATH_DEV ~/Library/MobileDevice/Provisioning\ Profiles/
+
       # iOS builds
-      - flutter build ipa --release --flavor prod --export-method app-store
-      - flutter build ipa --release --flavor dev --export-method ad-hoc
+      - flutter build ipa --release --flavor prod --export-method app-store \
+        --codesign-identity "iPhone Distribution: YOUR_NAME (XXFXC4935Z)" \
+        --provisioning-profile $IOS_PROVISIONING_PROFILE_PATH_PROD
+      - flutter build ipa --release --flavor dev --export-method ad-hoc \
+        --codesign-identity "iPhone Distribution: YOUR_NAME (XXFXC4935Z)" \
+        --provisioning-profile $IOS_PROVISIONING_PROFILE_PATH_DEV
 
     artifacts:
       # iOS IPAs
       - build/ios/ipa/Runner-prod.ipa
       - build/ios/ipa/Runner-dev.ipa
-
-    # iOS code signing configuration
-    publishing:
-      ios:
-        code_signing:
-          certificate_path: $IOS_CERTIFICATE_PATH
-          certificate_password: $IOS_CERTIFICATE_PASSWORD
-          # Separate provisioning profiles for each flavor
-          provisioning_profile_path:
-            prod: $IOS_PROVISIONING_PROFILE_PATH_PROD
-            dev: $IOS_PROVISIONING_PROFILE_PATH_DEV
-          bundle_identifier: com.app.weads
-          team_id: XXFXC4935Z  # Replace with your Apple Developer Team ID
-          export_method:
-            prod: app-store
-            dev: ad-hoc
