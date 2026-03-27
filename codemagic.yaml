@@ -1,37 +1,38 @@
 workflows:
-  ios-workflow:
+  ios-only-workflow:
     name: iOS Build
 
-    # Environment configuration
     environment:
       flutter: stable
       xcode: latest
       cocoapods: default
       vars:
-        # iOS code signing placeholders
         IOS_CERTIFICATE_PATH: Encrypted_P12_Path
         IOS_CERTIFICATE_PASSWORD: Encrypted_P12_Password
         IOS_PROVISIONING_PROFILE_PATH_PROD: Encrypted_Prod_Profile_Path
         IOS_PROVISIONING_PROFILE_PATH_DEV: Encrypted_Dev_Profile_Path
 
     scripts:
-      # Flutter dependencies
+      # Install dependencies
       - flutter pub get
 
-      # Set up code signing manually
+      # Set up provisioning profiles
       - mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
       - cp $IOS_PROVISIONING_PROFILE_PATH_PROD ~/Library/MobileDevice/Provisioning\ Profiles/
       - cp $IOS_PROVISIONING_PROFILE_PATH_DEV ~/Library/MobileDevice/Provisioning\ Profiles/
 
-      # iOS builds
-      - flutter build ipa --release --flavor prod --export-method app-store \
-        --codesign-identity "iPhone Distribution: YOUR_NAME (XXFXC4935Z)" \
+      # Build IPA for prod flavor
+      - flutter build ipa --release --flavor prod \
+        --export-method app-store \
+        --codesign-identity 'iPhone Distribution: John Doe (ABCDE12345)' \
         --provisioning-profile $IOS_PROVISIONING_PROFILE_PATH_PROD
-      - flutter build ipa --release --flavor dev --export-method ad-hoc \
-        --codesign-identity "iPhone Distribution: YOUR_NAME (XXFXC4935Z)" \
+
+      # Build IPA for dev flavor
+      - flutter build ipa --release --flavor dev \
+        --export-method ad-hoc \
+        --codesign-identity 'iPhone Distribution: John Doe (ABCDE12345)' \
         --provisioning-profile $IOS_PROVISIONING_PROFILE_PATH_DEV
 
     artifacts:
-      # iOS IPAs
       - build/ios/ipa/Runner-prod.ipa
       - build/ios/ipa/Runner-dev.ipa
