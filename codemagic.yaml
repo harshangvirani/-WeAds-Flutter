@@ -1,39 +1,25 @@
 workflows:
   ios-only-workflow:
-    name: iOS Build
+    name: iOS IPA Build
 
     environment:
       flutter: stable
       xcode: latest
       cocoapods: default
-      vars:
-        IOS_CERTIFICATE_PATH: Encrypted_P12_Path
-        IOS_CERTIFICATE_PASSWORD: Encrypted_P12_Password
-        IOS_PROVISIONING_PROFILE_PATH_PROD: Encrypted_Prod_Profile_Path
-        IOS_PROVISIONING_PROFILE_PATH_DEV: Encrypted_Dev_Profile_Path
 
     scripts:
       # Install dependencies
       - flutter pub get
 
-      # Set up provisioning profiles
-      - mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
-      - cp $IOS_PROVISIONING_PROFILE_PATH_PROD ~/Library/MobileDevice/Provisioning\ Profiles/
-      - cp $IOS_PROVISIONING_PROFILE_PATH_DEV ~/Library/MobileDevice/Provisioning\ Profiles/
-
-      # Build IPA for prod flavor
+      # Build IPA for production flavor (App Store)
       - >
         flutter build ipa --release --flavor prod
         --export-method app-store
-        --codesign-identity "iPhone Distribution: John Doe (ABCDE12345)"
-        --provisioning-profile $IOS_PROVISIONING_PROFILE_PATH_PROD
 
-      # Build IPA for dev flavor
+      # Build IPA for development flavor (Ad Hoc)
       - >
         flutter build ipa --release --flavor dev
         --export-method ad-hoc
-        --codesign-identity "iPhone Distribution: John Doe (ABCDE12345)"
-        --provisioning-profile $IOS_PROVISIONING_PROFILE_PATH_DEV
 
     artifacts:
       - build/ios/ipa/Runner-prod.ipa
