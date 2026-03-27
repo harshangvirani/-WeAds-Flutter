@@ -2,13 +2,43 @@ workflows:
   ios-workflow:
     name: iOS Build
 
+    # Environment configuration
     environment:
       flutter: stable
       xcode: latest
+      cocoapods: default
+      vars:
+        # iOS code signing placeholders
+        IOS_CERTIFICATE_PATH: Encrypted_P12_Path
+        IOS_CERTIFICATE_PASSWORD: Encrypted_P12_Password
+        IOS_PROVISIONING_PROFILE_PATH_PROD: Encrypted_Prod_Profile_Path
+        IOS_PROVISIONING_PROFILE_PATH_DEV: Encrypted_Dev_Profile_Path
 
     scripts:
+      # Flutter dependencies
       - flutter pub get
-      - flutter build ipa --release
+
+      # iOS builds
+      - flutter build ipa --release --flavor prod --export-method app-store
+      - flutter build ipa --release --flavor dev --export-method ad-hoc
 
     artifacts:
-      - build/ios/ipa/*.ipa
+      # iOS IPAs
+      - build/ios/ipa/Runner-prod.ipa
+      - build/ios/ipa/Runner-dev.ipa
+
+    # iOS code signing configuration
+    publishing:
+      ios:
+        code_signing:
+          certificate_path: $IOS_CERTIFICATE_PATH
+          certificate_password: $IOS_CERTIFICATE_PASSWORD
+          # Separate provisioning profiles for each flavor
+          provisioning_profile_path:
+            prod: $IOS_PROVISIONING_PROFILE_PATH_PROD
+            dev: $IOS_PROVISIONING_PROFILE_PATH_DEV
+          bundle_identifier: com.app.weads
+          team_id: XXFXC4935Z  # Replace with your Apple Developer Team ID
+          export_method:
+            prod: app-store
+            dev: ad-hoc
