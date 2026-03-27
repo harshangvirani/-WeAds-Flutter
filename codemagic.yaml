@@ -22,15 +22,17 @@ workflows:
       - cp $IOS_PROVISIONING_PROFILE_PATH_DEV ~/Library/MobileDevice/Provisioning\ Profiles/
 
       # Build IPA for prod flavor
-      - flutter build ipa --release --flavor prod \
-        --export-method app-store \
-        --codesign-identity 'iPhone Distribution: John Doe (ABCDE12345)' \
+      - >
+        flutter build ipa --release --flavor prod
+        --export-method app-store
+        --codesign-identity "iPhone Distribution: John Doe (ABCDE12345)"
         --provisioning-profile $IOS_PROVISIONING_PROFILE_PATH_PROD
 
       # Build IPA for dev flavor
-      - flutter build ipa --release --flavor dev \
-        --export-method ad-hoc \
-        --codesign-identity 'iPhone Distribution: John Doe (ABCDE12345)' \
+      - >
+        flutter build ipa --release --flavor dev
+        --export-method ad-hoc
+        --codesign-identity "iPhone Distribution: John Doe (ABCDE12345)"
         --provisioning-profile $IOS_PROVISIONING_PROFILE_PATH_DEV
 
     artifacts:
