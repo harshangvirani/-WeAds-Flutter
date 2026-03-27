@@ -1,12 +1,24 @@
 workflows:
-  android-workflow:
-    name: Android Build
+  android-ios-workflow:
+    name: Android & iOS Build
+
+    environment:
+      flutter: stable
+      xcode: latest
 
     scripts:
       - flutter pub get
+
+      # Android builds
       - flutter build apk --release --flavor prod
       - flutter build apk --release --flavor dev
 
+      # iOS build (no signing)
+      - flutter build ios --release --no-codesign
+
     artifacts:
-      - build/app/outputs/flutter-apk/app-prod-release.apk
-      - build/app/outputs/flutter-apk/app-dev-release.apk
+      # Android
+      - build/app/outputs/flutter-apk/*.apk
+
+      # iOS
+      - build/ios/iphoneos/*.app
