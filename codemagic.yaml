@@ -1,3 +1,2 @@
-artifacts:
-  - build/app/outputs/flutter-apk/*.apk
-  - build/app/outputs/bundle/**/*.aab
+scripts:
+  - flutter build apk --release --flavor prod
