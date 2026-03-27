@@ -1,6 +1,12 @@
-scripts:
-  - flutter build apk --release --flavor prod
-  - flutter build apk --release --flavor dev
+workflows:
+  android-workflow:
+    name: Android Build
 
-artifacts:
-  - build/app/outputs/flutter-apk/*.apk
+    scripts:
+      - flutter pub get
+      - flutter build apk --release --flavor prod
+      - flutter build apk --release --flavor dev
+
+    artifacts:
+      - build/app/outputs/flutter-apk/app-prod-release.apk
+      - build/app/outputs/flutter-apk/app-dev-release.apk
